@@ -1,7 +1,12 @@
-import Categoria from "./Categoria";
 import { categorias } from "../data/Categorias";
+import useCafe from "../hooks/useCafe";
+import Categoria from "./Categoria";
+
 
 export default function Sidebar() {
+
+const {categorias} = useCafe()
+
   return (
 <aside  className="md:w-72 ml-5 -mr-14">
 
