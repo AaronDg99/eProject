@@ -1,13 +1,13 @@
 import { createContext, useState, useEffect} from "react"
 import {toast} from 'react-toastify';
-import { categorias as categoriasDB} from "../data/Categorias";
+import clienteAxios from "../config/axios";
 
 const CafeContext = createContext();
 
 const CafeProvider = ({children}) => {
 
-   const [categorias, setCategorias] = useState(categoriasDB)
-   const [categoriaActual, setCategoriaActual] = useState(categorias[0])
+   const [categorias, setCategorias] = useState([])
+   const [categoriaActual, setCategoriaActual] = useState({})
    const [modal, setModal] = useState(false)
    const [producto, setProducto] = useState({})
    const [pedido, setPedido] = useState ([])
@@ -21,6 +21,26 @@ const CafeProvider = ({children}) => {
         const nuevoTotal = pedido.reduce((total, producto)=> (producto.precio * producto.cantidad) + total, 0 )
         setTotal(nuevoTotal)
    }, [pedido])
+
+//Cargar Categorias desde laravel con Axios
+   const obtenerCategorias =async () =>{
+    
+    try {
+        // console.log(import.meta.env.VITE_API_URL)
+        //(const {data} = await axios ('http://127.0.0.1:8000/api/categorias'))
+        // const {data} = await axios (`${import.meta.env.VITE_API_URL}/api/categorias`)
+        const {data} = await clienteAxios ( '/api/categorias' ) 
+        setCategorias(data.data)
+        setCategoriaActual(data.data[0])
+    } catch (error) {
+        console.log(error)
+    }
+
+   }
+
+   useEffect (()=>{
+    obtenerCategorias();
+   }, [])
 
    const handleClickCategoria = id => {
     const categoria = categorias.filter(categoria =>categoria.id === id)[0]
