@@ -1,7 +1,10 @@
 import { formatearDinero } from "../helpers"
+import useCafe from "../hooks/useCafe"
 
 export default function Producto({producto}) {
-    const {nombre, imagen, precio} = producto
+
+  const {handleClickModal, handleSetProducto} = useCafe();
+  const {nombre, imagen, precio} = producto
   return (
 
     <div 
@@ -16,7 +19,12 @@ export default function Producto({producto}) {
       <h3 className="mt-4 text-sm text-gray-700">{nombre}</h3>
         <p className="mt-1 mf-1 text-lg font-medium text-gray-900">{ formatearDinero (precio)}</p>
         
-        <button type="button" className="mt-5 inline-flex w-full items-center justify-center rounded-md bg-white px-4 py-2 text-sm uppercase font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Agregar</button>
+        <button type="button" className="mt-5 inline-flex w-full items-center justify-center rounded-md bg-white px-4 py-2 text-sm uppercase font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+        onClick={() => {
+          handleClickModal();
+          handleSetProducto(producto);
+        }}
+        >Agregar</button>
       </div>
     </div>
   )
